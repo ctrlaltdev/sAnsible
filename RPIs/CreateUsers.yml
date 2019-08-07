@@ -1,0 +1,25 @@
+---
+- hosts: rpis
+  remote_user: root
+  tasks:
+  - name: create users
+    user: 
+      state: present
+      name: 'null'
+      update_password: on_create
+      password: 'loveponeys'
+      ssh_key_type: 'ecdsa'
+      ssh_key_bits: '256'
+      generate_ssh_key: yes
+  - name: retrieve ssh private keys
+    fetch:
+      fail_on_missing: yes
+      validate_checksum: yes
+      src: /home/null/.ssh/id_ecdsa
+      dest: /home/void/.ssh/{{ inventory_hostname }}
+  - name: retrieve ssh public keys
+    fetch:
+      fail_on_missing: yes
+      validate_checksum: yes
+      src: /home/null/.ssh/id_ecdsa.pub
+      dest: /home/void/.ssh/{{ inventory_hostname }}.pub
