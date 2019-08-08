@@ -1,5 +1,5 @@
 ---
-- hosts: rpis
+- hosts: shards
   remote_user: root
   tasks:
   - name: create users
