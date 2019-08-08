@@ -1,7 +1,6 @@
 ---
-- hosts: shards
+- hosts: slaveshards
   become: yes
-  become_method: sudo
   tasks:
   - name: refresh yum cache
     yum:
@@ -11,3 +10,16 @@
     yum:
       state: latest
       name: '*'
+
+- hosts: mastershard
+  become: yes
+  tasks:
+  - name: refresh apt cache
+    apt:
+      update_cache: yes
+      state: latest
+  - name: update software
+    apt:
+      state: latest
+      name: '*'
+  

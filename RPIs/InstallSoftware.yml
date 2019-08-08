@@ -1,7 +1,6 @@
 ---
-- hosts: shards
+- hosts: slaveshards
   become: yes
-  become_method: sudo
   tasks:
   - name: add docker repo
     yum_repository:
@@ -23,9 +22,16 @@
         - containerd.io
       state: latest
     notify:
+      - add docker group to user
       - enable docker
       - start docker
   handlers:
+    - name: add docker group to user
+      user:
+        name: 'null'
+        state: present
+        groups: docker
+        append: yes
     - name: enable docker
       service: 
         name: docker
@@ -35,3 +41,44 @@
         name: docker
         state: started
         
+- hosts: mastershard
+  become: yes
+  tasks:
+  - name: get docker convenience script
+    shell: curl -fsSL https://get.docker.com -o /tmp/get_docker.sh
+  - name: run docker convenience script
+    shell: /tmp/get-docker.sh
+  - name: refresh yum cache
+    apt:
+      update_cache: yes
+      state: latest
+  - name: install neovim
+    apt:
+      name: neovim
+      state: latest
+  - name: install docker
+    apt:
+      name:
+        - docker-ce
+        - docker-ce-cli
+        - containerd.io
+      state: latest
+    notify:
+      - add docker group to user
+      - enable docker
+      - start docker
+  handlers:
+    - name: add docker group to user
+      user:
+        name: 'null'
+        state: present
+        groups: docker
+        append: yes
+    - name: enable docker
+      service: 
+        name: docker
+        enabled: yes
+    - name: start docker
+      service:
+        name: docker
+        state: started
