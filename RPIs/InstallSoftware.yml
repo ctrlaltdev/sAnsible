@@ -1,5 +1,5 @@
 ---
-- hosts: rpis
+- hosts: shards
   become: yes
   become_method: sudo
   tasks:
@@ -11,9 +11,9 @@
     yum:
       update_cache: yes
       state: latest
-  - name: install nvim
+  - name: install neovim
     yum:
-      name: nvim
+      name: neovim
       state: latest
   - name: install docker
     yum:
