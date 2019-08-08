@@ -16,10 +16,10 @@
       fail_on_missing: yes
       validate_checksum: yes
       src: /home/null/.ssh/id_ecdsa
-      dest: /home/void/.ssh/{{ inventory_hostname }}
+      dest: /home/void/.ssh/shards/
   - name: retrieve ssh public keys
     fetch:
       fail_on_missing: yes
       validate_checksum: yes
       src: /home/null/.ssh/id_ecdsa.pub
-      dest: /home/void/.ssh/{{ inventory_hostname }}.pub
+      dest: /home/void/.ssh/shards/
