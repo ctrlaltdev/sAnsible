@@ -1,0 +1,13 @@
+---
+- hosts: shards
+  become: yes
+  become_method: sudo
+  tasks:
+  - name: refresh yum cache
+    yum:
+      update_cache: yes
+      state: latest
+  - name: update software
+    yum:
+      state: latest
+      name: '*'
