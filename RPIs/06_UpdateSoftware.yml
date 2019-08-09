@@ -1,0 +1,13 @@
+---
+- hosts: shards
+  become: yes
+  tasks:
+  - name: refresh apt cache
+    apt:
+      update_cache: yes
+      state: latest
+  - name: update software
+    apt:
+      state: latest
+      name: '*'
+  

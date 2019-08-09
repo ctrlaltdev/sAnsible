@@ -1,0 +1,7 @@
+---
+- hosts: shards
+  tasks:
+  - name: remove default user
+    user:
+      name: pi
+      state: absent

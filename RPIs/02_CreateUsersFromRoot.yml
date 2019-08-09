@@ -1,0 +1,15 @@
+---
+- hosts: shards
+  remote_user: root
+  tasks:
+  - name: create users
+    user: 
+      state: present
+      name: 'null'
+      groups: shard
+      append: yes
+      update_password: on_create
+      password: '$6$Nug00YaTFIt2nzwE$6HRabrD6GCL36t2ic0CrxZ8bXYKWvIhauNUxDI8cdB9Sv5V9WCsHjMLE03WxkDJKprMA54ILJRWmrW/ouqADS1'
+      ssh_key_type: 'ecdsa'
+      ssh_key_bits: '256'
+      generate_ssh_key: yes

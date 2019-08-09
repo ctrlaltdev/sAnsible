@@ -1,5 +1,5 @@
 ---
-- hosts: slaveshards
+- hosts: shards
   remote_user: root
   tasks:
   - name: make copy of sudoers file
@@ -23,11 +23,5 @@
       state: present
       regexp: '^Defaults env_keep\+\=SSH_AUTH_SOCK'
       line: 'Defaults env_keep+=SSH_AUTH_SOCK'
-  - name: add group to users
-    user: 
-      state: present
-      name: 'null'
-      groups: shard
-      append: yes
   - name: updating sudoers
     shell: visudo -q -c -f /etc/sudoers.tmp && cp -f /etc/sudoers.tmp /etc/sudoers

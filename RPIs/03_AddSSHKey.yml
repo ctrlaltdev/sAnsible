@@ -1,0 +1,29 @@
+---
+- hosts: shards
+  tasks:
+  - name: start ssh-agent
+    shell: 'eval `ssh-agent`'
+  - name: add ssh key to ssh-agent
+    command: ssh-add /home/null/.ssh/id_ecdsa
+  - name: add key to authorized_keys
+    authorized_key:
+      user: 'null'
+      key: '{{item}}'
+    with_file:
+      - /home/null/.ssh/id_ecdsa.pub
+  - name: change authorized_keys permissions
+    file:
+      path: /home/null/.ssh/authorized_keys
+      mode: 0600
+  - name: retrieve ssh private keys
+    fetch:
+      fail_on_missing: yes
+      validate_checksum: yes
+      src: /home/null/.ssh/id_ecdsa
+      dest: /home/void/.ssh/shards/
+  - name: retrieve ssh public keys
+    fetch:
+      fail_on_missing: yes
+      validate_checksum: yes
+      src: /home/null/.ssh/id_ecdsa.pub
+      dest: /home/void/.ssh/shards/

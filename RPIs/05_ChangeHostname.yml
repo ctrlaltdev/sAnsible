@@ -1,0 +1,20 @@
+---
+hosts: shards
+become: yes
+become_method: su
+tasks: 
+  - name: change hostname
+    hostname:
+      name: {{inventory_hostname}}
+  - name: add hostname ipv4 to hosts file
+    lineinfile:
+      dest: /etc/hosts
+      state: present
+      regexp: '127.0.0.1   {{inventory_hostname}}'
+      line: '127.0.0.1   {{inventory_hostname}}'
+  - name: add hostname ipv6 to hosts file
+    lineinfile:
+      dest: /etc/hosts
+      state: present
+      regexp: '::1   {{inventory_hostname}}'
+      line: '::1   {{inventory_hostname}}'

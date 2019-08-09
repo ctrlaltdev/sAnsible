@@ -1,0 +1,12 @@
+---
+hosts: shards
+tasks:
+  - name: get docker check config script
+    get_url:
+      url: https://raw.githubusercontent.com/docker/docker/master/contrib/check-config.sh
+      dest: /tmp/check-config.sh
+      mode: 0755
+  - name: run docker check config script
+    script: /tmp/check-config.sh
+    args:
+      executable: bash
