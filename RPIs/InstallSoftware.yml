@@ -2,17 +2,23 @@
 - hosts: slaveshards
   become: yes
   tasks:
-  - name: add docker repo
-    yum_repository:
-      name: docker-ce
-      baseurl: https://download.docker.com/linux/centos/docker-ce.repo
+  - name: install docker repo dependencies
+    yum:
+      name:
+        - yum-utils
+        - device-mapper-persistent-data
+        - lvm2
+      state: latest
+  - name: get docker convenience script
+    get_url: 
+      url: https://get.docker.com
+      dest: /tmp/get-docker.sh
+      mode: 0655
+  - name: run docker convenience script
+    shell: /tmp/get-docker.sh
   - name: refresh yum cache
     yum:
       update_cache: yes
-      state: latest
-  - name: install neovim
-    yum:
-      name: neovim
       state: latest
   - name: install docker
     yum:
@@ -44,18 +50,24 @@
 - hosts: mastershard
   become: yes
   tasks:
-  - name: get docker convenience script
-    shell: curl -fsSL https://get.docker.com -o /tmp/get_docker.sh
-  - name: run docker convenience script
-    shell: /tmp/get-docker.sh
-  - name: refresh yum cache
+  # - name: get docker convenience script
+  #   get_url: 
+  #     url: https://get.docker.com
+  #     dest: /tmp/get-docker.sh
+  #     mode: 0655
+  # - name: run docker convenience script
+  #   shell: /tmp/get-docker.sh
+  - name: refresh apt cache
     apt:
       update_cache: yes
       state: latest
-  - name: install neovim
-    apt:
-      name: neovim
-      state: latest
+  # - name: install neovim
+  #   apt:
+  #     name:
+  #       - neovim
+  #       - python3-neovim
+  #       - python-neovim
+  #     state: latest
   - name: install docker
     apt:
       name:

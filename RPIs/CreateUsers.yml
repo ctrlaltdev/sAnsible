@@ -35,7 +35,7 @@
       ssh_key_bits: '256'
       generate_ssh_key: yes
   - name: updating sudoers
-    command: visudo -q -c -f /etc/sudoers.tmp && cp -f /etc/sudoers.tmp /etc/sudoers
+    shell: visudo -q -c -f /etc/sudoers.tmp && cp -f /etc/sudoers.tmp /etc/sudoers
   - name: start ssh-agent
     command: ssh-agent
     become: yes
