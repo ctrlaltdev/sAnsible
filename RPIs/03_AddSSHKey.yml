@@ -1,16 +1,14 @@
 ---
 - hosts: shards
   tasks:
-  - name: start ssh-agent
-    shell: 'eval `ssh-agent`'
-  - name: add ssh key to ssh-agent
-    command: ssh-add /home/null/.ssh/id_ecdsa
+  - name: start ssh-agent and add key
+    shell: eval `ssh-agent` && ssh-add /home/null/.ssh/id_ecdsa
   - name: add key to authorized_keys
     authorized_key:
       user: 'null'
       key: '{{item}}'
     with_file:
-      - /home/null/.ssh/id_ecdsa.pub
+      - /home/void/.ssh/{{inventory_hostname}}.pub
   - name: change authorized_keys permissions
     file:
       path: /home/null/.ssh/authorized_keys

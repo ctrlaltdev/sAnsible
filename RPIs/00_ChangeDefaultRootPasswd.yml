@@ -1,8 +1,18 @@
 ---
 - hosts: shards
-  remote_user: root
+  remote_user: pi
+  become: yes
+  become_method: sudo
   tasks:
   - name: update default root passwd
     user:
       name: root
       password: '$6$WwK8QbLZn43xZf$IYsbOHe5sY/jIx3PB0G81KTt5aI6ojDU9R2eJ.9XucgCf5t2FgUr4V5i8tF0KNvnP2dirLvH0D9yqpWnq3t/F.'
+  - name: allow root ssh
+    lineinfile:
+      dest: /etc/ssh/sshd_config
+      state: present
+      regexp: 'PermitRootLogin'
+      line: 'PermitRootLogin yes'
+  - name: restart sshd
+    shell: /etc/init.d/ssh restart
