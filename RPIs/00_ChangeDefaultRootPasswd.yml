@@ -1,6 +1,6 @@
 ---
 - hosts: shards
-  remote_user: pi
+  remote_user: null
   become: yes
   become_method: sudo
   tasks:
